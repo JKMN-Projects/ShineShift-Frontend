@@ -1,29 +1,68 @@
 <mat-drawer-container class="example-container" autosize>
+
   <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true">
-    <h2 style="text-align: center; font-weight: bolder; margin-bottom: 32px;  margin-top: 2px;">TourneyPlanner</h2>
-    <button routerLink="/Settings" mat-raised-button
-      style="display: block; min-width: 150px; max-width: 150px; margin: auto; text-align: start;" color="primary"><mat-icon>settings</mat-icon>Settings</button>
+
+    <img src="/assets/logo.png" alt="image" (click)="NavigateToHomeView()"
+      style="display: block; margin: auto; max-width: 175px; margin-bottom: 30px; cursor: pointer;">
+
+    <button mat-raised-button (click)="NavigateToHomeView()"
+      style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
+      color="primary">
+      <mat-icon>dashboard</mat-icon>Dashboards
+    </button>
+
+    <button mat-raised-button (click)="NavigateToHubView()"
+      style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
+      color="primary">
+      <mat-icon>device_hub</mat-icon>Hubs
+    </button>
+
+    <button mat-raised-button (click)="NavigateToSensorView()"
+      style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
+      color="primary">
+      <mat-icon>sensors</mat-icon>Sensors
+    </button>
+
+    <button mat-raised-button (click)="NavigateToMyHubsView()"
+      style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
+      color="primary">
+      <mat-icon>hub</mat-icon>My hubs
+    </button>
+
+    <button mat-raised-button (click)="NavigateToUserView()"
+      style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
+      color="primary">
+      <mat-icon>group</mat-icon>Users
+    </button>
+
   </mat-drawer>
 
   <div class="example-sidenav-content" style="display: flex; justify-content: space-between;">
-    <button type="button" mat-icon-button (click)="drawer.toggle()">
+
+    <button mat-button (click)="drawer.toggle()"
+      style="background-color: transparent; max-height: 35px; margin-top: 4px; margin-right: 5px;">
       <mat-icon>reorder</mat-icon>
     </button>
 
-    <button matTooltip="Press to logout" mat-raised-button (click)="Logout()"
+    <button *ngIf="false" matTooltip="Press to logout" mat-raised-button (click)="Logout()"
       style="max-height: 35px; margin-top: 4px; margin-right: 5px;" color="warn">
       <mat-icon>logout</mat-icon>Logout
     </button>
 
-    <button routerLink="/Login" matTooltip="Press to login" mat-raised-button
+    <button *ngIf="true" routerLink="/Login" matTooltip="Press to login" mat-raised-button
       style="max-height: 35px; margin-top: 4px; margin-right: 18px;" color="primary">
       <mat-icon>login</mat-icon>
       Login
     </button>
+
   </div>
 
-  <router-outlet>
-  </router-outlet>
+  <mat-card style="padding: 50px;">
+
+    <router-outlet>
+    </router-outlet>
+
+  </mat-card>
 
 </mat-drawer-container>
 

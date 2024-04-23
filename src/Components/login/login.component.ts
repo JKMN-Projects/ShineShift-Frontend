@@ -34,7 +34,7 @@ export class Login {
   }
 
   submitLogin() {
-    let login: UserModel = {id: '', username: this.username.value!, password: this.password.value!};
+    let login: UserModel = {id: 0, username: this.username.value!, password: this.password.value!};
     this.authService.getToken(login);
     this.router.navigateByUrl("/");
   };

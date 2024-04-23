@@ -1,8 +1,6 @@
 export interface SensorModel {
+  id: number,
   mac: string,
-  brand: string,
-  model: string,
-  serial: string,
-  hubId: string,
-  typeId: string
+  hubId?: string,
+  typeName: string
 }
