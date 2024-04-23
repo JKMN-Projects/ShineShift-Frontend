@@ -5,11 +5,15 @@ import { HubModel } from '../../Interfaces/HubModel';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { UpsertHubComponent } from '../Modals/upsert-hub/upsert-hub.component';
+import { MatButtonModule } from '@angular/material/button';
+import { DeleteConfirmationComponent } from '../Modals/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-hub-view',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatTabsModule, MatMenuModule, MatIcon],
+  imports: [MatTableModule, MatPaginatorModule, MatTabsModule, MatMenuModule, MatIcon, MatButtonModule],
   templateUrl: './hub-view.component.html',
   styleUrl: './hub-view.component.scss'
 })
@@ -21,9 +25,40 @@ export class HubViewComponent {
   @ViewChild("assigned") assignedPaginator!: MatPaginator;
   @ViewChild("unassigned") unassignedPaginator!: MatPaginator;
 
+  constructor(private matDialog: MatDialog) {}
+
   ngAfterViewInit() {
     this.assignedDataSource.paginator = this.assignedPaginator;
     this.unassignedDataSource.paginator = this.unassignedPaginator;
+  }
+
+  createNewHub() {
+    this.matDialog.open(UpsertHubComponent, {
+      disableClose: true,
+      data: null
+    });
+  }
+
+  updateHub(row: HubModel) {
+    this.matDialog.open(UpsertHubComponent, {
+      disableClose: true,
+      data: {
+        mac: row.mac,
+        roomName: row.roomName
+      }
+    });
+  }
+
+  deleteHub(row: HubModel) {
+    this.matDialog.open(DeleteConfirmationComponent, {
+      data: {
+        msg: "Are you sure you want to delete the hub in" + row.roomName + "?"
+      }
+    }).afterClosed().subscribe(x => {
+      if (x) {
+        // Call service to delete the hub
+      }
+    });
   }
 }
 

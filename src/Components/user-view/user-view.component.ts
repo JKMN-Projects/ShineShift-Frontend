@@ -4,11 +4,15 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { UpsertUserComponent } from '../Modals/upsert-user/upsert-user.component';
+import { DeleteConfirmationComponent } from '../Modals/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-user-view',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatMenuModule, MatIcon],
+  imports: [MatTableModule, MatPaginatorModule, MatMenuModule, MatIcon, MatButtonModule],
   templateUrl: './user-view.component.html',
   styleUrl: './user-view.component.scss'
 })
@@ -18,8 +22,39 @@ export class UserViewComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  constructor(private matDialog: MatDialog) {}
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  createUser() {
+    this.matDialog.open(UpsertUserComponent, {
+      disableClose: true,
+      data: null
+    });
+  }
+
+  updateUser(row: UserModel) {
+    this.matDialog.open(UpsertUserComponent, {
+      disableClose: true,
+      data: {
+        username: row.username,
+        role: row.role
+      }
+    });
+  }
+
+  deleteUser(row: UserModel) {
+    this.matDialog.open(DeleteConfirmationComponent, {
+      data: {
+        msg: "Are you sure you want to delete " + row.username + "?"
+      }
+    }).afterClosed().subscribe(x => {
+      if (x) {
+        // Call service to delete the user
+      }
+    });
   }
 }
 

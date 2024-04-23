@@ -8,3 +8,19 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-mdc-row:hover {
   background-color: #5E8FDE;
 }
+
+.menuButton {
+  border-color: transparent;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.centerContent {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.topMargin {
+  margin-top: 20px;
+}

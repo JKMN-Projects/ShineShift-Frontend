@@ -2,7 +2,7 @@
 
   <mat-tab label="Assigned">
 
-    <div class="mat-elevation-z8" style="margin-top: 20px;">
+    <div class="mat-elevation-z8 topMargin">
 
       <table mat-table [dataSource]="assignedDataSource">
 
@@ -24,7 +24,7 @@
         <ng-container matColumnDef="options">
           <th mat-header-cell *matHeaderCellDef> Options </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-icon-button [matMenuTriggerFor]="appMenu" style="border-color: transparent; background-color: transparent; cursor: pointer;">
+            <button mat-icon-button [matMenuTriggerFor]="appMenu" class="menuButton">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #appMenu>
@@ -50,7 +50,7 @@
 
   <mat-tab label="Unassigned">
 
-    <div class="mat-elevation-z8" style="margin-top: 20px;">
+    <div class="mat-elevation-z8 topMargin">
 
       <table mat-table [dataSource]="unassignedDataSource">
 
@@ -72,7 +72,7 @@
         <ng-container matColumnDef="options">
           <th mat-header-cell *matHeaderCellDef> Options </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-icon-button [matMenuTriggerFor]="appMenu" style="border-color: transparent; background-color: transparent; cursor: pointer;">
+            <button mat-icon-button [matMenuTriggerFor]="appMenu" class="menuButton">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #appMenu>

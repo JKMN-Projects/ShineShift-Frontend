@@ -1,0 +1,69 @@
+<div style="display: flex; justify-content: end; padding-top: 10px; padding-right: 10px;">
+
+  <button mat-icon-button color="warn" (click)="CloseDialog()"><mat-icon>close</mat-icon></button>
+
+</div>
+
+<mat-stepper>
+
+  <mat-step label="Hub configuration" [stepControl]="HubFormGroup" [formGroup]="HubFormGroup">
+
+    <div style="display: flex; justify-content: center; padding: 20px;">
+
+      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Mac address</mat-label>
+        <input type="text" matInput formControlName="Mac">
+        <mat-error>{{GetErrorMessage(HubFormGroup.get("Mac")!)}}</mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div style="display: flex; justify-content: center; padding: 20px;">
+
+      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Room name</mat-label>
+        <input type="text" matInput formControlName="RoomName">
+        <mat-error>{{GetErrorMessage(HubFormGroup.get("RoomName")!)}}</mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div *ngIf="HubFormGroup.valid" style="display: flex; justify-content: end; padding: 20px;">
+
+      <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
+
+    </div>
+
+  </mat-step>
+
+  <mat-step label="Confirmation">
+
+    <div style="display: flex; justify-content: center; padding: 20px;">
+
+      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Mac address</mat-label>
+        <input type="text" matInput disabled="true" [value]="HubFormGroup.get('Mac')?.value">
+      </mat-form-field>
+
+    </div>
+
+    <div style="display: flex; justify-content: center; padding: 20px;">
+
+      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Room name</mat-label>
+        <input type="text" matInput disabled="true" [value]="HubFormGroup.get('RoomName')?.value">
+      </mat-form-field>
+
+    </div>
+
+    <div style="display: flex; justify-content: space-between; padding: 20px;">
+
+      <button mat-raised-button matStepperPrevious><mat-icon>navigate_before</mat-icon>Go back</button>
+
+      <button mat-raised-button color="primary" (click)="SaveChanges()"><mat-icon>save</mat-icon>Save changes</button>
+
+    </div>
+
+  </mat-step>
+
+</mat-stepper>

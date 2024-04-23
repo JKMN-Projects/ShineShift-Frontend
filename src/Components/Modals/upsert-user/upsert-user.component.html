@@ -1,0 +1,72 @@
+<div style="display: flex; justify-content: end; padding-top: 10px; padding-right: 10px;">
+
+  <button mat-icon-button color="warn" (click)="CloseDialog()"><mat-icon>close</mat-icon></button>
+
+</div>
+
+<mat-stepper>
+
+  <mat-step label="Hub configuration" [stepControl]="UserFormGroup" [formGroup]="UserFormGroup">
+
+    <div style="display: flex; justify-content: center; padding: 20px;">
+
+      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Username</mat-label>
+        <input type="text" matInput formControlName="Username">
+        <mat-error>{{GetErrorMessage(UserFormGroup.get("Username")!)}}</mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div style="display: flex; justify-content: center; padding: 20px;">
+
+      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="Role" [compareWith]="CompareValues">
+          <mat-option [value]="'Admin'">Admin</mat-option>
+          <mat-option [value]="'Support'">Support</mat-option>
+        </mat-select>
+        <mat-error>{{GetErrorMessage(UserFormGroup.get("Role")!)}}</mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div *ngIf="UserFormGroup.valid" style="display: flex; justify-content: end; padding: 20px;">
+
+      <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
+
+    </div>
+
+  </mat-step>
+
+  <mat-step label="Confirmation">
+
+    <div style="display: flex; justify-content: center; padding: 20px;">
+
+      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Username</mat-label>
+        <input type="text" matInput disabled="true" [value]="UserFormGroup.get('Username')?.value">
+      </mat-form-field>
+
+    </div>
+
+    <div style="display: flex; justify-content: center; padding: 20px;">
+
+      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Role</mat-label>
+        <input type="text" matInput disabled="true" [value]="UserFormGroup.get('Role')?.value">
+      </mat-form-field>
+
+    </div>
+
+    <div style="display: flex; justify-content: space-between; padding: 20px;">
+
+      <button mat-raised-button matStepperPrevious><mat-icon>navigate_before</mat-icon>Go back</button>
+
+      <button mat-raised-button color="primary" (click)="SaveChanges()"><mat-icon>save</mat-icon>Save changes</button>
+
+    </div>
+
+  </mat-step>
+
+</mat-stepper>
