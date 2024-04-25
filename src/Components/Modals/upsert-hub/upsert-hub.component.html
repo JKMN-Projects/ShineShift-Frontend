@@ -10,9 +10,19 @@
 
     <div style="display: flex; justify-content: center; padding: 20px;">
 
-      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+      <mat-form-field *ngIf="!this.data.isAdmin" appearance="outline" floatLabel="always" style="width: 80%;">
         <mat-label>Mac address</mat-label>
         <input type="text" matInput formControlName="Mac">
+        <mat-error>{{GetErrorMessage(HubFormGroup.get("Mac")!)}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="this.data.isAdmin" appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Mac address</mat-label>
+        <!-- Add collection of users instead -->
+        <mat-select formControlName="Mac" [compareWith]="CompareMacValues">
+          <mat-option [value]="1">Mac1</mat-option>
+          <mat-option [value]="2">Mac2</mat-option>
+        </mat-select>
         <mat-error>{{GetErrorMessage(HubFormGroup.get("Mac")!)}}</mat-error>
       </mat-form-field>
 
@@ -28,24 +38,43 @@
 
     </div>
 
-    <div *ngIf="HubFormGroup.valid" style="display: flex; justify-content: end; padding: 20px;">
+    <div style="display: flex; justify-content: center; padding: 20px;">
 
-      <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
+      <mat-form-field *ngIf="this.data.isAdmin" appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>User</mat-label>
+        <!-- Add collection of users instead -->
+        <mat-select formControlName="User" [compareWith]="CompareValues">
+          <mat-option [value]="1">User1</mat-option>
+          <mat-option [value]="2">User2</mat-option>
+        </mat-select>
+        <mat-error>{{GetErrorMessage(HubFormGroup.get("User")!)}}</mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div *ngIf="this.data.isAdmin">
+
+      <div *ngIf="HubFormGroup.valid" style="display: flex; justify-content: end; padding: 20px;">
+
+        <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
+
+      </div>
+
+    </div>
+
+    <div *ngIf="!this.data.isAdmin">
+
+      <div *ngIf="HubFormGroup.get('RoomName')?.valid" style="display: flex; justify-content: end; padding: 20px;">
+
+        <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
+
+      </div>
 
     </div>
 
   </mat-step>
 
   <mat-step label="Confirmation">
-
-    <div style="display: flex; justify-content: center; padding: 20px;">
-
-      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
-        <mat-label>Mac address</mat-label>
-        <input type="text" matInput disabled="true" [value]="HubFormGroup.get('Mac')?.value">
-      </mat-form-field>
-
-    </div>
 
     <div style="display: flex; justify-content: center; padding: 20px;">
 

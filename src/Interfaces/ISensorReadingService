@@ -1,0 +1,5 @@
+import { SensorReadingModel } from "./SensorReadingModel";
+
+export interface ISensorReadingService {
+  getSensorReadings(id: number): Array<SensorReadingModel>;
+}

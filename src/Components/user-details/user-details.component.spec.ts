@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HubViewComponent } from './hub-view.component';
+import { UserDetailsComponent } from './user-details.component';
 
-describe('HubViewComponent', () => {
-  let component: HubViewComponent;
-  let fixture: ComponentFixture<HubViewComponent>;
+describe('UserDetailsComponent', () => {
+  let component: UserDetailsComponent;
+  let fixture: ComponentFixture<UserDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HubViewComponent]
+      imports: [UserDetailsComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(HubViewComponent);
+    fixture = TestBed.createComponent(UserDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

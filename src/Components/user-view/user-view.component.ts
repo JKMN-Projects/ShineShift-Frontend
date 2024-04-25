@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { UpsertUserComponent } from '../Modals/upsert-user/upsert-user.component';
 import { DeleteConfirmationComponent } from '../Modals/delete-confirmation/delete-confirmation.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-view',
@@ -22,10 +23,14 @@ export class UserViewComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private matDialog: MatDialog) {}
+  constructor(private matDialog: MatDialog, private router: Router) {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  redirectToUserDetails(row: UserModel) {
+    this.router.navigateByUrl("UserDetails", {state: {data: " (" + row.role + ") " + row.username, id: row.id}});
   }
 
   createUser() {

@@ -1,4 +1,4 @@
 export interface UserHubModel {
-  userId: string,
+  userId: number,
   hubMac: string
 }

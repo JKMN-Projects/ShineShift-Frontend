@@ -1,41 +1,50 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { HubModel } from '../../Interfaces/HubModel';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIcon } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { UpsertHubComponent } from '../Modals/upsert-hub/upsert-hub.component';
+import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { DeleteConfirmationComponent } from '../Modals/delete-confirmation/delete-confirmation.component';
+import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-hub-view',
+  selector: 'app-user-details',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatTabsModule, MatMenuModule, MatIcon, MatButtonModule],
-  templateUrl: './hub-view.component.html',
-  styleUrl: './hub-view.component.scss'
+  imports: [MatTableModule, MatPaginatorModule, MatIcon, MatButtonModule],
+  templateUrl: './user-details.component.html',
+  styleUrl: './user-details.component.scss'
 })
-export class HubViewComponent {
-  displayedColumns: string[] = ['mac', 'roomName', 'options'];
-  assignedDataSource = new MatTableDataSource<HubModel>(ELEMENT_DATA);
-  unassignedDataSource = new MatTableDataSource<HubModel>(ELEMENT_DATA);
+export class UserDetailsComponent {
+  displayedColumns: string[] = ['name', 'mac', 'roomName', 'options'];
+  dataSource = new MatTableDataSource<HubModel>(ELEMENT_DATA);
 
-  @ViewChild("assigned") assignedPaginator!: MatPaginator;
-  @ViewChild("unassigned") unassignedPaginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private matDialog: MatDialog) {}
+  name = "";
+  id = 0;
 
-  ngAfterViewInit() {
-    this.assignedDataSource.paginator = this.assignedPaginator;
-    this.unassignedDataSource.paginator = this.unassignedPaginator;
+  constructor(private matDialog: MatDialog, private location: Location) {
+    this.name = (this.location.getState() as any).data;
+    this.id = (this.location.getState() as any).id;
   }
 
-  createNewHub() {
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  getName(row: HubModel): string {
+    return row.mac.slice(row.mac.length - 5, row.mac.length) + " - " + row.roomName;
+  }
+
+  assignHub() {
     this.matDialog.open(UpsertHubComponent, {
       disableClose: true,
-      data: null
+      data: {
+        id: this.id,
+        isAdmin: this.id
+      }
     });
   }
 
@@ -44,19 +53,8 @@ export class HubViewComponent {
       disableClose: true,
       data: {
         mac: row.mac,
-        roomName: row.roomName
-      }
-    });
-  }
-
-  deleteHub(row: HubModel) {
-    this.matDialog.open(DeleteConfirmationComponent, {
-      data: {
-        msg: "Are you sure you want to delete the hub in" + row.roomName + "?"
-      }
-    }).afterClosed().subscribe(x => {
-      if (x) {
-        // Call service to delete the hub
+        roomName: row.roomName,
+        isAdmin: false
       }
     });
   }

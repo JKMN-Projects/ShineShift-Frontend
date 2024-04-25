@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { Login } from '../Components/login/login.component';
-import { SensorViewComponent } from '../Components/sensor-view/sensor-view.component';
 import { HomePageComponent } from '../Components/home-page/home-page.component';
-import { HubViewComponent } from '../Components/hub-view/hub-view.component';
 import { UserViewComponent } from '../Components/user-view/user-view.component';
 import { MyHubViewComponent } from '../Components/my-hub-view/my-hub-view.component';
 import { SensorReadingViewComponent } from '../Components/sensor-reading-view/sensor-reading-view.component';
+import { HubDetailsComponent } from '../Components/hub-details/hub-details.component';
+import { UserDetailsComponent } from '../Components/user-details/user-details.component';
 
 export const routes: Routes = [
   {
@@ -17,16 +17,12 @@ export const routes: Routes = [
     component: Login
   },
   {
-    path: 'Hubs',
-    component: HubViewComponent
-  },
-  {
     path: 'MyHubs',
     component: MyHubViewComponent
   },
   {
-    path: 'Sensors',
-    component: SensorViewComponent
+    path: 'HubDetails',
+    component: HubDetailsComponent
   },
   {
     path: 'SensorReading',
@@ -35,5 +31,9 @@ export const routes: Routes = [
   {
     path: 'Users',
     component: UserViewComponent
+  },
+  {
+    path: 'UserDetails',
+    component: UserDetailsComponent
   }
 ];
