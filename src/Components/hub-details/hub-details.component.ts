@@ -35,11 +35,11 @@ export class HubDetailsComponent {
     this.dataSource.paginator = this.paginator;
   }
 
-  assignSensor(row: SensorModel) {
+  assignSensor() {
     this.matDialog.open(UpsertSensorComponent, {
       disableClose: true,
       data: {
-        sensor: row,
+        sensor: null,
         hubId: this.hubId,
         isAssign: true
       }

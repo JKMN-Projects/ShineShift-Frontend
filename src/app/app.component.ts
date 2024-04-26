@@ -25,6 +25,10 @@ export class AppComponent {
     this.router.navigateByUrl("/");
   }
 
+  NavigateToDashboardView() {
+    this.router.navigateByUrl("/Dashboards");
+  }
+
   NavigateToSensorView() {
     this.router.navigateByUrl("/Sensors");
   }

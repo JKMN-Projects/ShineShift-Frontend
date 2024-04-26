@@ -6,6 +6,7 @@ import { MyHubViewComponent } from '../Components/my-hub-view/my-hub-view.compon
 import { SensorReadingViewComponent } from '../Components/sensor-reading-view/sensor-reading-view.component';
 import { HubDetailsComponent } from '../Components/hub-details/hub-details.component';
 import { UserDetailsComponent } from '../Components/user-details/user-details.component';
+import { DashboardViewComponent } from '../Components/dashboard-view/dashboard-view.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,10 @@ export const routes: Routes = [
   {
     path: 'Login',
     component: Login
+  },
+  {
+    path: 'Dashboards',
+    component: DashboardViewComponent
   },
   {
     path: 'MyHubs',

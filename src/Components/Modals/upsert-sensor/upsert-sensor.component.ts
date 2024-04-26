@@ -27,21 +27,14 @@ export class UpsertSensorComponent {
   constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<UpsertSensorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { sensor: SensorModel, hubId: string, isAssign: boolean }) {
     if (this.data != null && this.data != undefined) {
-      if (this.data.isAssign) {
+      if (!this.data.isAssign) {
         this.assignValues();
       }
-
-      this.HubFormGroup.get("Type")?.setValue(this.data.sensor.typeName);
     }
   }
 
   assignValues() {
-    let hub: HubModel = { mac: this.data.hubId, roomName: "" };
-    this.HubFormGroup.get("Hub")?.setValue(hub);
-  }
-
-  MacSelectionChange(row: SensorModel) {
-    // this.HubFormGroup.get("RoomName")?.setValue(row.roomName);
+    this.HubFormGroup.get("Type")?.setValue(this.data.sensor.typeName);
   }
 
   SaveChanges() {
