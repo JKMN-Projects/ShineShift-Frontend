@@ -6,49 +6,21 @@
 
 <mat-stepper>
 
-  <mat-step label="Hub configuration" [stepControl]="HubFormGroup" [formGroup]="HubFormGroup">
+  <mat-step label="Hub configuration" [stepControl]="SensorFormGroup" [formGroup]="SensorFormGroup">
 
     <div style="display: flex; justify-content: center; padding: 20px;">
 
       <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
         <mat-label>Type</mat-label>
         <input type="text" matInput formControlName="Type">
-        <mat-error>{{GetErrorMessage(HubFormGroup.get("Type")!)}}</mat-error>
+        <mat-error>{{GetErrorMessage(SensorFormGroup.get("Type")!)}}</mat-error>
       </mat-form-field>
 
     </div>
 
-    <div style="display: flex; justify-content: center; padding: 20px;">
+    <div *ngIf="SensorFormGroup.get('Type')?.valid" style="display: flex; justify-content: end; padding: 20px;">
 
-      <mat-form-field *ngIf="this.data.isAssign" appearance="outline" floatLabel="always" style="width: 80%;">
-        <mat-label>Hub mac address</mat-label>
-        <!-- Add collection of hub mac address' instead -->
-        <mat-select formControlName="Hub" [compareWith]="CompareMacValues">
-          <mat-option [value]="1">Mac1</mat-option>
-          <mat-option [value]="2">Mac2</mat-option>
-        </mat-select>
-        <mat-error>{{GetErrorMessage(HubFormGroup.get("Hub")!)}}</mat-error>
-      </mat-form-field>
-
-    </div>
-
-    <div *ngIf="this.data.isAssign">
-
-      <div *ngIf="HubFormGroup.valid" style="display: flex; justify-content: end; padding: 20px;">
-
-        <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
-
-      </div>
-
-    </div>
-
-    <div *ngIf="!this.data.isAssign">
-
-      <div *ngIf="HubFormGroup.get('Type')?.valid" style="display: flex; justify-content: end; padding: 20px;">
-
-        <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
-
-      </div>
+      <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
 
     </div>
 
@@ -60,17 +32,7 @@
 
       <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
         <mat-label>Type</mat-label>
-        <input type="text" matInput disabled="true" [value]="HubFormGroup.get('Type')?.value">
-      </mat-form-field>
-
-    </div>
-
-    <div style="display: flex; justify-content: center; padding: 20px;">
-
-      <mat-form-field *ngIf="this.data.isAssign" appearance="outline" floatLabel="always" style="width: 80%;">
-        <mat-label>Hub mac address</mat-label>
-        <!-- <input type="text" matInput disabled="true" [value]="HubFormGroup.valid ? HubFormGroup.get('Hub')?.value.mac : ''"> -->
-        <input type="text" matInput disabled="true" [value]="HubFormGroup.valid ? HubFormGroup.get('Hub')?.value : ''">
+        <input type="text" matInput disabled="true" [value]="SensorFormGroup.get('Type')?.value">
       </mat-form-field>
 
     </div>

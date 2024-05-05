@@ -5,23 +5,27 @@
     <img src="/assets/logo.png" alt="image" (click)="NavigateToHomeView()"
       style="display: block; margin: auto; max-width: 175px; margin-bottom: 30px; cursor: pointer;">
 
-    <button mat-raised-button *ngIf="IsSupport()" (click)="NavigateToDashboardView()"
-      style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
-      color="primary">
-      <mat-icon>dashboard</mat-icon>Dashboards
-    </button>
+    <div *ngIf="isLoggedIn$ | async">
 
-    <button mat-raised-button *ngIf="IsSupport()" (click)="NavigateToMyHubsView()"
-      style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
-      color="primary">
-      <mat-icon>hub</mat-icon>My hubs
-    </button>
+      <button mat-raised-button *ngIf="IsSupport()" (click)="NavigateToDashboardView()"
+        style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
+        color="primary">
+        <mat-icon>dashboard</mat-icon>Dashboards
+      </button>
 
-    <button mat-raised-button *ngIf="IsAdmin()" (click)="NavigateToUserView()"
-      style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
-      color="primary">
-      <mat-icon>group</mat-icon>Users
-    </button>
+      <button mat-raised-button *ngIf="IsSupport()" (click)="NavigateToMyHubsView()"
+        style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
+        color="primary">
+        <mat-icon>hub</mat-icon>My hubs
+      </button>
+
+      <button mat-raised-button *ngIf="IsAdmin()" (click)="NavigateToUserView()"
+        style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
+        color="primary">
+        <mat-icon>group</mat-icon>Users
+      </button>
+
+    </div>
 
   </mat-drawer>
 

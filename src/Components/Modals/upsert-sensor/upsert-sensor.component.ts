@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { HubModel } from '../../../Interfaces/Models/HubModel';
+import { SensorService } from '../../../Services/sensor.service';
+import { UpdateSensorRequest } from '../../../Interfaces/DTO/update-sensor-request';
 
 @Component({
   selector: 'app-upsert-sensor',
@@ -19,33 +21,27 @@ import { HubModel } from '../../../Interfaces/Models/HubModel';
   styleUrl: './upsert-sensor.component.scss'
 })
 export class UpsertSensorComponent {
-  HubFormGroup: FormGroup = this.fb.group({
-    Hub: new FormControl(null, [Validators.required]),
+  SensorFormGroup: FormGroup = this.fb.group({
     Type: new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(255)])
   });
 
-  constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<UpsertSensorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { sensor: SensorModel, hubId: string, isAssign: boolean }) {
+  constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<UpsertSensorComponent>, private sensorService: SensorService,
+    @Inject(MAT_DIALOG_DATA) public data: { sensor: SensorModel }) {
     if (this.data != null && this.data != undefined) {
-      if (!this.data.isAssign) {
-        this.assignValues();
-      }
+      this.assignValues();
     }
   }
 
   assignValues() {
-    this.HubFormGroup.get("Type")?.setValue(this.data.sensor.typeName);
+    this.SensorFormGroup.get("Type")?.setValue(this.data.sensor.typeName);
   }
 
   SaveChanges() {
-    if (this.data.isAssign) {
-      // Call service to assign user to a hub
-    }
-    else {
-      // Call service to update room name on hub
-    }
+    let temp: UpdateSensorRequest = { id: this.data.sensor.id, type: this.SensorFormGroup.get("Type")?.value };
 
-    console.log("Room name: " + this.HubFormGroup.get("RoomName")?.value);
+    this.sensorService.updateSensor(temp);
+
+    this.CloseDialog();
   }
 
   CloseDialog() {

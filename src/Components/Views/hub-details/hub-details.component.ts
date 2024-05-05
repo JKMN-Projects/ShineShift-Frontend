@@ -9,6 +9,10 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { SensorService } from '../../../Services/sensor.service';
+import { AssignSensorComponent } from '../../Modals/assign-sensor/assign-sensor.component';
+import { UnassignSensorRequest } from '../../../Interfaces/DTO/unassign-sensor-request';
+import { DeleteConfirmationComponent } from '../../Modals/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-hub-details',
@@ -18,17 +22,19 @@ import { Location } from '@angular/common';
   styleUrl: './hub-details.component.scss'
 })
 export class HubDetailsComponent {
-  displayedColumns: string[] = ['id', 'mac', 'typeName', 'options'];
+  displayedColumns: string[] = ['id', 'mac', 'typeName', 'options', 'delete'];
   dataSource = new MatTableDataSource<SensorModel>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   name = "";
-  hubId = "";
+  hubId = 0;
 
-  constructor(private matDialog: MatDialog, private router: Router, private location: Location) {
+  constructor(private matDialog: MatDialog, private router: Router, private location: Location, private sensorService: SensorService) {
     this.name = (this.location.getState() as any).data;
     this.hubId = (this.location.getState() as any).hubId;
+
+    this.sensorService.getAllByHubId(this.hubId);
   }
 
   ngAfterViewInit() {
@@ -36,12 +42,10 @@ export class HubDetailsComponent {
   }
 
   assignSensor() {
-    this.matDialog.open(UpsertSensorComponent, {
+    this.matDialog.open(AssignSensorComponent, {
       disableClose: true,
       data: {
-        sensor: null,
-        hubId: this.hubId,
-        isAssign: true
+        hubId: this.hubId
       }
     });
   }
@@ -50,9 +54,20 @@ export class HubDetailsComponent {
     this.matDialog.open(UpsertSensorComponent, {
       disableClose: true,
       data: {
-        sensor: row,
-        hubId: this.hubId,
-        isAssign: false
+        sensor: row
+      }
+    });
+  }
+
+  unassignSensor(row: SensorModel) {
+    this.matDialog.open(DeleteConfirmationComponent, {
+      data: {
+        msg: "Are you sure you want to unassign this sensor?"
+      }
+    }).afterClosed().subscribe(x => {
+      if (x) {
+        let temp: UnassignSensorRequest = {sensorId: row.id};
+        this.sensorService.unassignSensor(temp, this.hubId);
       }
     });
   }

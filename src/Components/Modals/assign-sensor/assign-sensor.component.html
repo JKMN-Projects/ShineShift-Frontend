@@ -1,0 +1,31 @@
+<div style="display: flex; justify-content: end; padding-top: 10px; padding-right: 10px;">
+
+  <button mat-icon-button color="warn" (click)="CloseDialog()"><mat-icon>close</mat-icon></button>
+
+</div>
+
+<mat-stepper>
+
+  <mat-step label="Assign sensor" [stepControl]="SensorFormGroup" [formGroup]="SensorFormGroup">
+
+    <div style="display: flex; justify-content: center; padding: 20px;">
+
+      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
+        <mat-label>Sensor mac addresses</mat-label>
+        <mat-select formControlName="Sensor" [compareWith]="CompareValues">
+          <mat-option *ngFor="let item of sensors$ | async" [value]="item">{{item.mac}}</mat-option>
+        </mat-select>
+        <mat-error>{{GetErrorMessage(SensorFormGroup.get("Sensor")!)}}</mat-error>
+      </mat-form-field>
+
+    </div>
+
+      <div *ngIf="SensorFormGroup.valid" style="display: flex; justify-content: end; padding: 20px;">
+
+        <button mat-raised-button color="primary" (click)="SaveChanges()"><mat-icon>save</mat-icon>Save changes</button>
+
+      </div>
+
+  </mat-step>
+
+</mat-stepper>
