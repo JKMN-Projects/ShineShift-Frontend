@@ -17,9 +17,17 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     private asyncPipe: AsyncPipe
   ) {}
 
-  setAuthHeader(): HttpHeaders {
+  private setAuthHeader(): HttpHeaders {
     const token = sessionStorage.getItem("accessToken");
     return new HttpHeaders().set("Authorization", "Bearer " + token);
+  }
+
+  getHttpOptions() {
+    const headers = this.setAuthHeader();
+    const httpOptions = {
+      headers: headers
+    };
+    return httpOptions;
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
