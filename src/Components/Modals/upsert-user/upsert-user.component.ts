@@ -9,6 +9,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { UserService } from '../../../Services/user.service';
+import { CreateUserRequest } from '../../../Interfaces/DTO/create-user-request';
 
 @Component({
   selector: 'app-upsert-user',
@@ -23,7 +25,7 @@ export class UpsertUserComponent {
     Role: new FormControl(null, [Validators.required])
   });
 
-  constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<UpsertUserComponent>,
+  constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<UpsertUserComponent>, private userService: UserService,
     @Inject(MAT_DIALOG_DATA) private data: {username: string, role: string}) {
     if (this.data != null && this.data != undefined) {
       this.assignInitialValues();
@@ -40,11 +42,11 @@ export class UpsertUserComponent {
   }
 
   SaveChanges() {
-    // Call service and create object of type HubModel as parameter
-    let temp: UserModel = {id: 0, username: this.UserFormGroup.get("Username")?.value, role: this.UserFormGroup.get("Role")?.value}
-    console.log("Username: " + this.UserFormGroup.get("Username")?.value);
-    console.log("Role: " + this.UserFormGroup.get("Role")?.value);
-    console.log(temp);
+    let temp: CreateUserRequest = {email: this.UserFormGroup.get("Username")?.value};
+
+    this.userService.createUser(temp);
+
+    this.CloseDialog();
   }
 
   CloseDialog() {
