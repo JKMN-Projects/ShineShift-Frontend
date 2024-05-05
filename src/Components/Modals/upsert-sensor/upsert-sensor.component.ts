@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SensorModel } from '../../../Interfaces/SensorModel';
+import { SensorModel } from '../../../Interfaces/Models/SensorModel';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,7 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { HubModel } from '../../../Interfaces/HubModel';
+import { HubModel } from '../../../Interfaces/Models/HubModel';
 
 @Component({
   selector: 'app-upsert-sensor',

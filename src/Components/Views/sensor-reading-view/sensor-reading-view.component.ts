@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { SensorReadingModel } from '../../Interfaces/SensorReadingModel';
+import { SensorReadingModel } from '../../../Interfaces/Models/SensorReadingModel';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIcon } from '@angular/material/icon';

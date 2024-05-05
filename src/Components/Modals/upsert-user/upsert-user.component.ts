@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { UserModel } from '../../../Interfaces/UserModel';
+import { UserModel } from '../../../Interfaces/Models/UserModel';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';

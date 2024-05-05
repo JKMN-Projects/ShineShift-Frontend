@@ -1,13 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { UserModel } from '../../Interfaces/UserModel';
+import { UserModel } from '../../../Interfaces/Models/UserModel';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { UpsertUserComponent } from '../Modals/upsert-user/upsert-user.component';
-import { DeleteConfirmationComponent } from '../Modals/delete-confirmation/delete-confirmation.component';
+import { UpsertUserComponent } from '../../Modals/upsert-user/upsert-user.component';
+import { DeleteConfirmationComponent } from '../../Modals/delete-confirmation/delete-confirmation.component';
 import { Router } from '@angular/router';
 
 @Component({

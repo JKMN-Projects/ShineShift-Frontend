@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { UpsertSensorComponent } from '../Modals/upsert-sensor/upsert-sensor.component';
-import { SensorModel } from '../../Interfaces/SensorModel';
+import { UpsertSensorComponent } from '../../Modals/upsert-sensor/upsert-sensor.component';
+import { SensorModel } from '../../../Interfaces/Models/SensorModel';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';

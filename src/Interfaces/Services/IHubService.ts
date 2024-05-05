@@ -1,4 +1,4 @@
-import { HubModel } from "./HubModel";
+import { HubModel } from "../Models/HubModel";
 
 export interface IHubService {
   getUnassignedHubs(): Array<HubModel>;

@@ -1,27 +1,34 @@
 import { Component, ViewChild } from '@angular/core';
-import { HubModel } from '../../Interfaces/HubModel';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { HubModel } from '../../../Interfaces/Models/HubModel';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { UpsertHubComponent } from '../Modals/upsert-hub/upsert-hub.component';
 import { Router } from '@angular/router';
+import { UpsertHubComponent } from '../../Modals/upsert-hub/upsert-hub.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-my-hub-view',
+  selector: 'app-user-details',
   standalone: true,
-  imports: [MatPaginatorModule, MatIcon, MatButtonModule, MatTableModule],
-  templateUrl: './my-hub-view.component.html',
-  styleUrl: './my-hub-view.component.scss'
+  imports: [MatTableModule, MatPaginatorModule, MatIcon, MatButtonModule],
+  templateUrl: './user-details.component.html',
+  styleUrl: './user-details.component.scss'
 })
-export class MyHubViewComponent {
+export class UserDetailsComponent {
   displayedColumns: string[] = ['name', 'mac', 'roomName', 'options'];
   dataSource = new MatTableDataSource<HubModel>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private matDialog: MatDialog, private router: Router) {}
+  name = "";
+  id = 0;
+
+  constructor(private matDialog: MatDialog, private location: Location) {
+    this.name = (this.location.getState() as any).data;
+    this.id = (this.location.getState() as any).id;
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -31,19 +38,25 @@ export class MyHubViewComponent {
     return row.mac.slice(row.mac.length - 5, row.mac.length) + " - " + row.roomName;
   }
 
+  assignHub() {
+    this.matDialog.open(UpsertHubComponent, {
+      disableClose: true,
+      data: {
+        id: this.id,
+        isAdmin: this.id
+      }
+    });
+  }
+
   updateHub(row: HubModel) {
     this.matDialog.open(UpsertHubComponent, {
       disableClose: true,
       data: {
         mac: row.mac,
-        roomName: row.roomName
+        roomName: row.roomName,
+        isAdmin: false
       }
     });
-  }
-
-  redirectToHubDetails(row: HubModel) {
-    // Call service and get all sensors connected to the hub
-    this.router.navigateByUrl("HubDetails", {state: {data: this.getName(row), hubId: row.mac}});
   }
 }
 

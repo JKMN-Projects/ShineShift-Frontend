@@ -5,19 +5,19 @@
     <img src="/assets/logo.png" alt="image" (click)="NavigateToHomeView()"
       style="display: block; margin: auto; max-width: 175px; margin-bottom: 30px; cursor: pointer;">
 
-    <button mat-raised-button (click)="NavigateToDashboardView()"
+    <button mat-raised-button *ngIf="IsSupport()" (click)="NavigateToDashboardView()"
       style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
       color="primary">
       <mat-icon>dashboard</mat-icon>Dashboards
     </button>
 
-    <button mat-raised-button (click)="NavigateToMyHubsView()"
+    <button mat-raised-button *ngIf="IsSupport()" (click)="NavigateToMyHubsView()"
       style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
       color="primary">
       <mat-icon>hub</mat-icon>My hubs
     </button>
 
-    <button mat-raised-button (click)="NavigateToUserView()"
+    <button mat-raised-button *ngIf="IsAdmin()" (click)="NavigateToUserView()"
       style="display: block; min-width: 175px; max-width: 175px; margin: auto; text-align: start; margin-bottom: 30px;"
       color="primary">
       <mat-icon>group</mat-icon>Users
@@ -32,13 +32,13 @@
       <mat-icon>reorder</mat-icon>
     </button>
 
-    <button *ngIf="false" matTooltip="Press to logout" mat-raised-button (click)="Logout()"
+    <button *ngIf="isLoggedIn$ | async" matTooltip="Press to logout" mat-raised-button (click)="Logout()"
       style="max-height: 35px; margin-top: 4px; margin-right: 5px;" color="warn">
       <mat-icon>logout</mat-icon>Logout
     </button>
 
-    <button *ngIf="true" routerLink="/Login" matTooltip="Press to login" mat-raised-button
-      style="max-height: 35px; margin-top: 4px; margin-right: 18px;" color="primary">
+    <button *ngIf="!(isLoggedIn$ | async)" matTooltip="Press to login" mat-raised-button
+      style="max-height: 35px; margin-top: 4px; margin-right: 18px;" color="primary" (click)="NavigateToLoginView()">
       <mat-icon>login</mat-icon>
       Login
     </button>

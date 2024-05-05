@@ -1,5 +1,5 @@
-import { UserHubModel } from "./UserHubModel";
-import { UserModel } from "./UserModel";
+import { UserHubModel } from "../Models/UserHubModel";
+import { UserModel } from "../Models/UserModel";
 
 export interface IUserService {
   getUserList(): Array<UserModel>;

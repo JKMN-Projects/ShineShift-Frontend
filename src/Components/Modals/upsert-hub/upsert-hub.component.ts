@@ -4,12 +4,12 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModu
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
-import { HubModel } from '../../../Interfaces/HubModel';
+import { HubModel } from '../../../Interfaces/Models/HubModel';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { UserModel } from '../../../Interfaces/UserModel';
-import { UserHubModel } from '../../../Interfaces/UserHubModel';
+import { UserModel } from '../../../Interfaces/Models/UserModel';
+import { UserHubModel } from '../../../Interfaces/Models/UserHubModel';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({

@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { MatDrawer, MatDrawerContainer } from '@angular/material/sidenav';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { AuthenticationService } from '../Services/authentication.service';
 import { MatCardModule } from '@angular/material/card';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
+import { EventBusService } from '../Services/event-bus.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -15,14 +17,26 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'ShineShift';
+  eventBusSub?: Subscription;
+  isLoggedIn$ = this.authService.loggedIn$;
 
-  constructor(private authService: AuthenticationService, private router: Router) {
-  };
+  constructor(public authService: AuthenticationService, private router: Router, private eventBusService: EventBusService) {
+  }
+
+  ngOnInit(): void {
+    this.eventBusSub = this.eventBusService.on('logout', () => {
+      this.Logout();
+    });
+  }
 
   NavigateToHomeView() {
     this.router.navigateByUrl("/");
+  }
+
+  NavigateToLoginView() {
+    this.router.navigateByUrl("/Login");
   }
 
   NavigateToDashboardView() {
@@ -45,8 +59,16 @@ export class AppComponent {
     this.router.navigateByUrl("/Users");
   }
 
+  IsAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  IsSupport(): boolean {
+    return this.authService.isSupport();
+  }
+
   Logout() {
     this.authService.removeToken();
-    this.router.navigateByUrl("/")
+    this.router.navigateByUrl("/");
   };
 };
