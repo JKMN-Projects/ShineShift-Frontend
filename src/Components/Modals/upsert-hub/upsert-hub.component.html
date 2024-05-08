@@ -27,7 +27,7 @@
 
     </div>
 
-    <div style="display: flex; justify-content: center; padding: 20px;">
+    <div style="display: flex; justify-content: center; padding: 20px;" *ngIf="!isAdmin">
 
       <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
         <mat-label>Room name</mat-label>
@@ -37,23 +37,23 @@
 
     </div>
 
-    <div style="display: flex; justify-content: center; padding: 20px;">
+    <!-- <div style="display: flex; justify-content: center; padding: 20px;">
 
       <mat-form-field *ngIf="isAdmin" appearance="outline" floatLabel="always" style="width: 80%;">
         <mat-label>User</mat-label>
-        <mat-select formControlName="User" [compareWith]="CompareMacValues">
+        <mat-select formControlName="User" [compareWith]="CompareValues">
           <mat-option *ngFor="let item of users$ | async" [value]="item">{{item.email}}</mat-option>
         </mat-select>
         <mat-error>{{GetErrorMessage(HubFormGroup.get("User")!)}}</mat-error>
       </mat-form-field>
 
-    </div>
+    </div> -->
 
     <div *ngIf="isAdmin">
 
-      <div *ngIf="HubFormGroup.valid" style="display: flex; justify-content: end; padding: 20px;">
+      <div *ngIf="HubFormGroup.get('Mac')?.valid" style="display: flex; justify-content: end; padding: 20px;">
 
-        <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
+        <button mat-raised-button color="primary" (click)="SaveChanges()"><mat-icon>save</mat-icon>Save changes</button>
 
       </div>
 
@@ -63,30 +63,9 @@
 
       <div *ngIf="HubFormGroup.get('RoomName')?.valid" style="display: flex; justify-content: end; padding: 20px;">
 
-        <button mat-raised-button matStepperNext><mat-icon>navigate_next</mat-icon>Next</button>
+        <button mat-raised-button color="primary" (click)="SaveChanges()"><mat-icon>save</mat-icon>Save changes</button>
 
       </div>
-
-    </div>
-
-  </mat-step>
-
-  <mat-step label="Confirmation">
-
-    <div style="display: flex; justify-content: center; padding: 20px;">
-
-      <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
-        <mat-label>Room name</mat-label>
-        <input type="text" matInput disabled="true" [value]="HubFormGroup.get('RoomName')?.value">
-      </mat-form-field>
-
-    </div>
-
-    <div style="display: flex; justify-content: space-between; padding: 20px;">
-
-      <button mat-raised-button matStepperPrevious><mat-icon>navigate_before</mat-icon>Go back</button>
-
-      <button mat-raised-button color="primary" (click)="SaveChanges()"><mat-icon>save</mat-icon>Save changes</button>
 
     </div>
 

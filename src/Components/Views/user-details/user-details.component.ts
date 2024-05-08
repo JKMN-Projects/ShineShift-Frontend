@@ -47,8 +47,8 @@ export class UserDetailsComponent {
     this.matDialog.open(UpsertHubComponent, {
       disableClose: true,
       data: {
-        id: this.id,
-        isAdmin: this.id
+        userId: this.id,
+        isAdmin: true
       }
     });
   }

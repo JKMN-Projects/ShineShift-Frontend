@@ -14,6 +14,7 @@ import { AuthenticationService } from './authentication.service';
 })
 export class HubService implements IHubService {
   url: string = 'https://ShineShiftAPI.bm-vault.com/api/Hubs/';
+  localUrl: string = 'https://localhost:7129/api/Hubs/';
 
   private hubs: Array<HubModel> = [];
 
@@ -42,7 +43,6 @@ export class HubService implements IHubService {
   }
 
   assignHubToUser(request: AssignHubToUserRequest): void {
-    console.log(request);
     this.httpClient.put<any>(this.url + 'AssignHubToUser', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
       if (x.status < 200 && x.status > 299) {
         alert("Failed to assign hub. " + errorMsg())

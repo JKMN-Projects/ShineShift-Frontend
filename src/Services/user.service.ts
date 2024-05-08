@@ -13,6 +13,7 @@ import { RoleModel } from '../Interfaces/Models/RoleModel';
 })
 export class UserService implements IUserService {
   url: string = 'https://ShineShiftAPI.bm-vault.com/api/User/';
+  localUrl: string = 'https://localhost:7129/api/User/';
 
   private users: Array<UserModel> = [];
   private usersSubject$: Subject<UserModel[]> = new BehaviorSubject<UserModel[]>(this.users);

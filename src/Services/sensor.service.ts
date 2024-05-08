@@ -17,6 +17,8 @@ import { SensorReadingModel } from '../Interfaces/Models/SensorReadingModel';
 export class SensorService implements ISensorService {
   url: string = 'https://ShineShiftAPI.bm-vault.com/api/Sensors/';
   readingsUrl: string = 'https://ShineShiftAPI.bm-vault.com/api/SensorReadings/';
+  localUrl: string = 'https://localhost:7129/api/Sensors/';
+  localReadingsUrl: string = 'https://localhost:7129/api/SensorReadings/';
 
   private sensors: Array<SensorModel> = [];
   private sensorReading: Array<SensorReadingModel> = [];

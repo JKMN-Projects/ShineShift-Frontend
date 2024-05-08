@@ -8,8 +8,6 @@ import { HubModel } from '../../../Interfaces/Models/HubModel';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { UserModel } from '../../../Interfaces/Models/UserModel';
-import { UserHubModel } from '../../../Interfaces/Models/UserHubModel';
 import { MatSelectModule } from '@angular/material/select';
 import { HubService } from '../../../Services/hub.service';
 import { AssignHubToUserRequest } from '../../../Interfaces/DTO/assign-hub-request';
@@ -28,33 +26,23 @@ export class UpsertHubComponent {
   HubFormGroup: FormGroup = this.fb.group({
     Mac: new FormControl(null, [Validators.required]),
     RoomName: new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(255)]),
-    User: new FormControl(null, [Validators.required])
   });
 
   hubs$ = this.hubService.unassignedHubs$;
-  users$ = this.userService.users$;
 
   isAdmin = false;
 
   constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<UpsertHubComponent>, private hubService: HubService, private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) public data: { userId: string, hubId: number, mac: string, roomName: string }, private authService: AuthenticationService) {
+    @Inject(MAT_DIALOG_DATA) public data: { userId: string, hubId: number, mac: string, roomName: string, isAdmin: boolean }, private authService: AuthenticationService) {
     this.hubService.getUnassignedHubs();
-    this.userService.getUserList();
+
+    this.isAdmin = this.data.isAdmin;
 
     if (this.data != null && this.data != undefined) {
-      this.isAdmin = this.authService.isAdmin();
-      if (this.isAdmin) {
-        this.assignInitialValuesAdmin();
-      }
-      else {
+      if (!this.isAdmin) {
         this.assignInitialValuesSupport();
       }
     }
-  }
-
-  assignInitialValuesAdmin() {
-    let temp: UserModel = { id: this.data.userId, email: "" };
-    this.HubFormGroup.get("User")?.setValue(temp);
   }
 
   assignInitialValuesSupport() {
@@ -70,7 +58,7 @@ export class UpsertHubComponent {
   SaveChanges() {
     if (this.isAdmin) {
       let request: AssignHubToUserRequest = {
-        userid: (this.HubFormGroup.get("User")?.value as UserModel).id,
+        userid: this.data.userId,
         hubId: (this.HubFormGroup.get("Mac")?.value as HubModel).id
       };
 
@@ -93,10 +81,6 @@ export class UpsertHubComponent {
 
   CloseDialog() {
     this.matDialogRef.close();
-  }
-
-  CompareValues(collectionItem: UserHubModel, formControlItem: UserHubModel): boolean {
-    return formControlItem != undefined ? (collectionItem.userId == formControlItem.userId ? true : false) : false;
   }
 
   CompareMacValues(collectionItem: HubModel, formControlItem: HubModel): boolean {
