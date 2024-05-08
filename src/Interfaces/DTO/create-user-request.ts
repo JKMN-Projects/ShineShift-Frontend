@@ -1,3 +1,4 @@
 export interface CreateUserRequest {
-  email: string
+  email: string,
+  roleId: number
 }

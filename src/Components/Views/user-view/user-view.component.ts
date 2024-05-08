@@ -10,6 +10,7 @@ import { UpsertUserComponent } from '../../Modals/upsert-user/upsert-user.compon
 import { DeleteConfirmationComponent } from '../../Modals/delete-confirmation/delete-confirmation.component';
 import { Router } from '@angular/router';
 import { UserService } from '../../../Services/user.service';
+import { HubService } from '../../../Services/hub.service';
 
 @Component({
   selector: 'app-user-view',
@@ -19,12 +20,12 @@ import { UserService } from '../../../Services/user.service';
   styleUrl: './user-view.component.scss'
 })
 export class UserViewComponent {
-  displayedColumns: string[] = ['id', 'username', 'role', 'options'];
+  displayedColumns: string[] = ['email', 'role', 'options'];
   dataSource = new MatTableDataSource<UserModel>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private matDialog: MatDialog, private router: Router, private userService: UserService) {
+  constructor(private matDialog: MatDialog, private router: Router, private userService: UserService, private hubService: HubService) {
     this.userService.getUserList();
 
     this.userService.users$.subscribe(x => {
@@ -37,7 +38,8 @@ export class UserViewComponent {
   }
 
   redirectToUserDetails(row: UserModel) {
-    this.router.navigateByUrl("UserDetails", {state: {data: " (" + row.role + ") " + row.username, id: row.id}});
+    this.hubService.getMyHubs(row.id);
+    this.router.navigateByUrl("UserDetails", {state: {data: " (" + row.role + ") " + row.email, id: row.id}});
   }
 
   createUser() {
@@ -51,7 +53,7 @@ export class UserViewComponent {
     this.matDialog.open(UpsertUserComponent, {
       disableClose: true,
       data: {
-        username: row.username,
+        email: row.email,
         role: row.role
       }
     });
@@ -60,11 +62,11 @@ export class UserViewComponent {
   deleteUser(row: UserModel) {
     this.matDialog.open(DeleteConfirmationComponent, {
       data: {
-        msg: "Are you sure you want to delete " + row.username + "?"
+        msg: "Are you sure you want to delete " + row.email + "?"
       }
     }).afterClosed().subscribe(x => {
       if (x) {
-        // Call service to delete the user
+        this.userService.deleteUser(row.id);
       }
     });
   }

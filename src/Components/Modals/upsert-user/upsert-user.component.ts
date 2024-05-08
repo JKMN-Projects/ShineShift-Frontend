@@ -21,28 +21,50 @@ import { CreateUserRequest } from '../../../Interfaces/DTO/create-user-request';
 })
 export class UpsertUserComponent {
   UserFormGroup: FormGroup = this.fb.group({
-    Username: new FormControl(null, [Validators.required, Validators.email]),
+    Email: new FormControl(null, [Validators.required, Validators.email]),
     Role: new FormControl(null, [Validators.required])
   });
 
+  roles$ = this.userService.roles$;
+
   constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<UpsertUserComponent>, private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) private data: {username: string, role: string}) {
+    @Inject(MAT_DIALOG_DATA) private data: { email: string, role: string }) {
+    this.userService.getRoles();
+
     if (this.data != null && this.data != undefined) {
       this.assignInitialValues();
     }
   }
 
   assignInitialValues() {
-    this.UserFormGroup.get("Username")?.setValue(this.data?.username);
-    this.UserFormGroup.get("Role")?.setValue(this.data?.role);
+    this.UserFormGroup.get("Email")?.setValue(this.data?.email);
+    this.UserFormGroup.get("Role")?.setValue(this.CompareValues());
   }
 
-  CompareValues(collectionItem: string, formControlItem: string): boolean {
-    return formControlItem != undefined ? (collectionItem == formControlItem ? true : false) : false;
+  CompareValues(): number {
+    if (this.data.role == 'Support') {
+      return 1;
+    }
+    else if (this.data.role == 'Admin') {
+      return 2;
+    }
+
+    return 0;
+  }
+
+  GetDisplayValue(): string {
+    if (this.UserFormGroup.get("Role")?.value == 1) {
+      return 'Support';
+    }
+    else if (this.UserFormGroup.get("Role")?.value == 2) {
+      return 'Admin';
+    }
+
+    return '';
   }
 
   SaveChanges() {
-    let temp: CreateUserRequest = {email: this.UserFormGroup.get("Username")?.value};
+    let temp: CreateUserRequest = { email: this.UserFormGroup.get("Email")?.value, roleId: this.UserFormGroup.get("Role")?.value };
 
     this.userService.createUser(temp);
 

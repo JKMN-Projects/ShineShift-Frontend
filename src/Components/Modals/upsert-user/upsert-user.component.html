@@ -11,9 +11,9 @@
     <div style="display: flex; justify-content: center; padding: 20px;">
 
       <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
-        <mat-label>Username</mat-label>
-        <input type="text" matInput formControlName="Username">
-        <mat-error>{{GetErrorMessage(UserFormGroup.get("Username")!)}}</mat-error>
+        <mat-label>Email</mat-label>
+        <input type="text" matInput formControlName="Email">
+        <mat-error>{{GetErrorMessage(UserFormGroup.get("Email")!)}}</mat-error>
       </mat-form-field>
 
     </div>
@@ -22,9 +22,8 @@
 
       <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
         <mat-label>Role</mat-label>
-        <mat-select formControlName="Role" [compareWith]="CompareValues">
-          <mat-option [value]="'Admin'">Admin</mat-option>
-          <mat-option [value]="'Support'">Support</mat-option>
+        <mat-select formControlName="Role">
+          <mat-option *ngFor="let item of roles$ | async" [value]="item.id">{{item.name}}</mat-option>
         </mat-select>
         <mat-error>{{GetErrorMessage(UserFormGroup.get("Role")!)}}</mat-error>
       </mat-form-field>
@@ -44,8 +43,8 @@
     <div style="display: flex; justify-content: center; padding: 20px;">
 
       <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
-        <mat-label>Username</mat-label>
-        <input type="text" matInput disabled="true" [value]="UserFormGroup.get('Username')?.value">
+        <mat-label>Email</mat-label>
+        <input type="text" matInput disabled="true" [value]="UserFormGroup.get('Email')?.value">
       </mat-form-field>
 
     </div>
@@ -54,7 +53,7 @@
 
       <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
         <mat-label>Role</mat-label>
-        <input type="text" matInput disabled="true" [value]="UserFormGroup.get('Role')?.value">
+        <input type="text" matInput disabled="true" [value]="GetDisplayValue()">
       </mat-form-field>
 
     </div>

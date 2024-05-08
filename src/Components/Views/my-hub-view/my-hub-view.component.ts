@@ -10,11 +10,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { HubService } from '../../../Services/hub.service';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../../../Services/authentication.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { DeleteConfirmationComponent } from '../../Modals/delete-confirmation/delete-confirmation.component';
+import { UnassignHubRequest } from '../../../Interfaces/DTO/unassign-hub-request';
 
 @Component({
   selector: 'app-my-hub-view',
   standalone: true,
-  imports: [MatPaginatorModule, MatIcon, MatButtonModule, MatTableModule],
+  imports: [MatPaginatorModule, MatIcon, MatButtonModule, MatTableModule, MatMenuModule],
   templateUrl: './my-hub-view.component.html',
   styleUrl: './my-hub-view.component.scss'
 })
@@ -27,7 +30,7 @@ export class MyHubViewComponent {
   subs: Array<Subscription> = new Array<Subscription>();
 
   constructor(private matDialog: MatDialog, private router: Router, private hubService: HubService, private authService: AuthenticationService) {
-    this.hubService.getMyHubs();
+    this.hubService.getMyHubs(this.authService.getUserId());
 
     this.subs.push(this.hubService.hubs$.subscribe(x => {
       this.dataSource.data = x;
@@ -53,9 +56,22 @@ export class MyHubViewComponent {
     });
   }
 
+  deleteHub(row: HubModel) {
+    this.matDialog.open(DeleteConfirmationComponent, {
+      data: {
+        msg: "Are you sure you want to delete this hub?"
+      }
+    }).afterClosed().subscribe(x => {
+      if (x) {
+        let temp: UnassignHubRequest = { hubId: row.id };
+        this.hubService.unassignHubToUser(temp);
+      }
+    });
+  }
+
   redirectToHubDetails(row: HubModel) {
     // Call service and get all sensors connected to the hub
-    this.router.navigateByUrl("HubDetails", {state: {data: this.getName(row), hubId: row.id}});
+    this.router.navigateByUrl("HubDetails", {state: {data: this.getName(row), hubMac: row.mac, hubId: row.id}});
   }
 }
 

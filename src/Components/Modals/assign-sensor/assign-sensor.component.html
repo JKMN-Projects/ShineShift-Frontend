@@ -13,7 +13,7 @@
       <mat-form-field appearance="outline" floatLabel="always" style="width: 80%;">
         <mat-label>Sensor mac addresses</mat-label>
         <mat-select formControlName="Sensor" [compareWith]="CompareValues">
-          <mat-option *ngFor="let item of sensors$ | async" [value]="item">{{item.mac}}</mat-option>
+          <mat-option *ngFor="let item of unassignedSensors$ | async" [value]="item">{{item.mac}}</mat-option>
         </mat-select>
         <mat-error>{{GetErrorMessage(SensorFormGroup.get("Sensor")!)}}</mat-error>
       </mat-form-field>

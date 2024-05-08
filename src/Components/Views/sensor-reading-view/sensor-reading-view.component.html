@@ -6,27 +6,22 @@
 
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> Id </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.sensor_Id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="startTime">
       <th mat-header-cell *matHeaderCellDef> Start time </th>
-      <td mat-cell *matCellDef="let element"> {{element.startTime.toLocaleString("en-DK")}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.startTime}} </td>
     </ng-container>
 
     <ng-container matColumnDef="readingTime">
       <th mat-header-cell *matHeaderCellDef> Reading time </th>
-      <td mat-cell *matCellDef="let element"> {{element.readingTime.toLocaleString("en-DK")}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="timeSinceStart">
-      <th mat-header-cell *matHeaderCellDef> Time since start </th>
-      <td mat-cell *matCellDef="let element"> {{element.timeSinceStart}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.readingTime}} </td>
     </ng-container>
 
     <ng-container matColumnDef="value">
       <th mat-header-cell *matHeaderCellDef> Value </th>
-      <td mat-cell *matCellDef="let element"> {{element.value.toFixed(2)}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.value}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

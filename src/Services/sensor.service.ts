@@ -9,14 +9,17 @@ import { errorMsg } from '../Utility/GetErrorMessage';
 import { AssignSensorRequest } from '../Interfaces/DTO/assign-sensor-request';
 import { UpdateSensorRequest } from '../Interfaces/DTO/update-sensor-request';
 import { HttpOptionsService } from './http-options.service';
+import { SensorReadingModel } from '../Interfaces/Models/SensorReadingModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SensorService implements ISensorService {
   url: string = 'https://localhost:7129/api/Sensors/';
+  readingsUrl: string = 'https://localhost:7129/api/SensorReadings/';
 
   private sensors: Array<SensorModel> = [];
+  private sensorReading: Array<SensorReadingModel> = [];
 
   private sensorsSubject$: Subject<SensorModel[]> = new BehaviorSubject<SensorModel[]>(this.sensors);
   sensors$: Observable<SensorModel[]> = this.sensorsSubject$.asObservable();
@@ -24,21 +27,24 @@ export class SensorService implements ISensorService {
   private unassignedSensorsSubject$: Subject<SensorModel[]> = new BehaviorSubject<SensorModel[]>(this.sensors);
   unassignedSensors$: Observable<SensorModel[]> = this.unassignedSensorsSubject$.asObservable();
 
-  constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
+  private sensorReadingSubject$: Subject<SensorReadingModel[]> = new BehaviorSubject<SensorReadingModel[]>(this.sensorReading);
+  sensorReading$: Observable<SensorReadingModel[]> = this.sensorReadingSubject$.asObservable();
 
-  updateSensor(request: UpdateSensorRequest): void {
-    this.httpClient.put<boolean>(this.url + 'UpdateSensor', request, this.httpOptions.getHttpOptions()).subscribe(x => {
-      if (!x) {
-        alert("Failed to update sensor. " + errorMsg())
-      }
-    });
-  }
+  constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
 
   getAllByHubId(hubId: number) {
     this.sensorsSubject$.next(this.sensors);
 
     this.httpClient.get<SensorModel[]>(this.url + 'GetAllByHubId/' + hubId, this.httpOptions.getHttpOptions()).subscribe(x => {
       this.sensorsSubject$.next(x);
+    });
+  }
+
+  getAllBySensorId(sensorId: number) {
+    this.sensorReadingSubject$.next(this.sensorReading);
+
+    this.httpClient.get<SensorReadingModel[]>(this.readingsUrl + 'GetAllBySensorId/' + sensorId, this.httpOptions.getHttpOptions()).subscribe(x => {
+      this.sensorReadingSubject$.next(x);
     });
   }
 
@@ -50,17 +56,9 @@ export class SensorService implements ISensorService {
     });
   }
 
-  assignSensor(request: AssignSensorRequest): void {
-    this.httpClient.put<boolean>(this.url + 'UnassignSensor', request, this.httpOptions.getHttpOptions()).subscribe(x => {
-      if (!x) {
-        alert("Failed to assign sensor. " + errorMsg())
-      }
-    });
-  }
-
   changeSensorConfiguration(request: ChangeSensorConfigurationRequest, hubId: number) {
-    this.httpClient.put<boolean>(this.url + 'ChangeSensorConfiguration', request, this.httpOptions.getHttpOptions()).subscribe(x => {
-      if (!x) {
+    this.httpClient.put<any>(this.url + 'ChangeSensorConfiguration', request, this.httpOptions.getHttpOptions()).subscribe(x => {
+      if (x.status < 200 && x.status > 299) {
         alert("Failed to update sensor configuration. " + errorMsg())
       }
 
@@ -68,13 +66,29 @@ export class SensorService implements ISensorService {
     });
   }
 
+  assignSensor(request: AssignSensorRequest): void {
+    this.httpClient.put<any>(this.url + 'AssignSensorToHub', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
+      if (x.status < 200 && x.status > 299) {
+        alert("Failed to assign sensor. " + errorMsg())
+      }
+    });
+  }
+
   unassignSensor(request: UnassignSensorRequest, hubId: number) {
-    this.httpClient.put<boolean>(this.url + 'UnassignSensor', request, this.httpOptions.getHttpOptions()).subscribe(x => {
-      if (!x) {
+    this.httpClient.put<any>(this.url + 'UnassignSensor', request, this.httpOptions.getHttpOptions()).subscribe(x => {
+      if (x.status < 200 && x.status > 299) {
         alert("Failed to update sensor. " + errorMsg())
       }
 
       this.getAllByHubId(hubId);
+    });
+  }
+
+  updateSensor(request: UpdateSensorRequest): void {
+    this.httpClient.put<any>(this.url + 'UpdateSensor', request, this.httpOptions.getHttpOptions()).subscribe(x => {
+      if (x.status < 200 && x.status > 299) {
+        alert("Failed to update sensor. " + errorMsg())
+      }
     });
   }
 }

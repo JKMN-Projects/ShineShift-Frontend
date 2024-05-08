@@ -33,7 +33,7 @@ export class UpsertSensorComponent {
   }
 
   assignValues() {
-    this.SensorFormGroup.get("Type")?.setValue(this.data.sensor.typeName);
+    this.SensorFormGroup.get("Type")?.setValue(this.data.sensor.type);
   }
 
   SaveChanges() {
@@ -46,14 +46,6 @@ export class UpsertSensorComponent {
 
   CloseDialog() {
     this.matDialogRef.close();
-  }
-
-  CompareValues(collectionItem: SensorModel, formControlItem: SensorModel): boolean {
-    return formControlItem != undefined ? (collectionItem == formControlItem ? true : false) : false;
-  }
-
-  CompareMacValues(collectionItem: SensorModel, formControlItem: SensorModel): boolean {
-    return formControlItem != undefined ? (collectionItem.mac == formControlItem.mac ? true : false) : false;
   }
 
   GetErrorMessage(control: AbstractControl): string {

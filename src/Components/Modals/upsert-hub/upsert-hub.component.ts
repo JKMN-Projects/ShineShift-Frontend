@@ -12,7 +12,7 @@ import { UserModel } from '../../../Interfaces/Models/UserModel';
 import { UserHubModel } from '../../../Interfaces/Models/UserHubModel';
 import { MatSelectModule } from '@angular/material/select';
 import { HubService } from '../../../Services/hub.service';
-import { AssignHubRequest } from '../../../Interfaces/DTO/assign-hub-request';
+import { AssignHubToUserRequest } from '../../../Interfaces/DTO/assign-hub-request';
 import { AuthenticationService } from '../../../Services/authentication.service';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../Services/user.service';
@@ -25,18 +25,16 @@ import { UserService } from '../../../Services/user.service';
   styleUrl: './upsert-hub.component.scss'
 })
 export class UpsertHubComponent {
-  isAdmin = false;
-
-  regex: string = "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
-
   HubFormGroup: FormGroup = this.fb.group({
-    Mac: new FormControl(null, [Validators.required, Validators.pattern(this.regex)]),
+    Mac: new FormControl(null, [Validators.required]),
     RoomName: new FormControl(null, [Validators.required, Validators.minLength(2), Validators.maxLength(255)]),
     User: new FormControl(null, [Validators.required])
   });
 
   hubs$ = this.hubService.unassignedHubs$;
   users$ = this.userService.users$;
+
+  isAdmin = false;
 
   constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<UpsertHubComponent>, private hubService: HubService, private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: { userId: string, hubId: number, mac: string, roomName: string }, private authService: AuthenticationService) {
@@ -55,7 +53,7 @@ export class UpsertHubComponent {
   }
 
   assignInitialValuesAdmin() {
-    let temp: UserHubModel = { userId: this.data.userId, hubMac: this.data.mac };
+    let temp: UserModel = { id: this.data.userId, email: "" };
     this.HubFormGroup.get("User")?.setValue(temp);
   }
 
@@ -71,8 +69,8 @@ export class UpsertHubComponent {
 
   SaveChanges() {
     if (this.isAdmin) {
-      let request: AssignHubRequest = {
-        userId: (this.HubFormGroup.get("User")?.value as UserHubModel).userId,
+      let request: AssignHubToUserRequest = {
+        userid: (this.HubFormGroup.get("User")?.value as UserModel).id,
         hubId: (this.HubFormGroup.get("Mac")?.value as HubModel).id
       };
 

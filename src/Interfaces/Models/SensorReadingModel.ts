@@ -1,8 +1,7 @@
 export interface SensorReadingModel {
-  id: number,
-  startTime: Date,
-  readingTime: Date,
-  timeSinceStart: number,
-  value: number,
-  sensorId: number
+  Id: string,
+  Sensor_Id: number,
+  StartTime: Date,
+  ReadingTime: Date,
+  Value: number,
 }

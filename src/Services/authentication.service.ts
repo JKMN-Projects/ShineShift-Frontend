@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Token } from '../Interfaces/DTO/Token';
 import { LoginRequest } from '../Interfaces/DTO/login-request';
+import { AsyncPipe } from '@angular/common';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -18,7 +19,7 @@ export class AuthenticationService {
   private loggedInSubject$: Subject<boolean> = new BehaviorSubject<boolean>(false);
   loggedIn$: Observable<boolean> = this.loggedInSubject$.asObservable();
 
-  constructor(private httpClient: HttpClient) { };
+  constructor(private httpClient: HttpClient, private async: AsyncPipe) { };
 
   getToken(login: LoginRequest) {
     this.httpClient.post<Token>(this.url + 'Login', login).subscribe(x => {
@@ -33,8 +34,6 @@ export class AuthenticationService {
   removeToken() {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
-    sessionStorage.removeItem("userId");
-    sessionStorage.removeItem("roleId");
     this.loggedInSubject$.next(false);
   };
 
@@ -50,19 +49,27 @@ export class AuthenticationService {
       sessionStorage.setItem("refreshToken", x.refreshToken);
 
       this.loggedInSubject$.next(true);
-
-      let temp = JSON.parse(atob(sessionStorage.getItem("accessToken")!.split('.')[1]));
-
-      sessionStorage.setItem("userId", temp.UserId);
-      sessionStorage.setItem("roleId", temp.role);
     };
   };
 
   getRoleId(): number {
-    return Number.parseInt(sessionStorage.getItem("roleId") ?? "0");
+    let temp = JSON.parse(atob(sessionStorage.getItem("accessToken")!.split('.')[1]));
+
+    if (temp.role == 'Support') {
+      return 1;
+    }
+    else if (temp.role == 'Admin') {
+      return 2;
+    }
+
+    return 0;
   }
 
   isAdmin(): boolean {
+    if (!this.async.transform(this.loggedIn$)) {
+      return false;
+    }
+
     let temp = this.getRoleId();
 
     if (temp > 1) {
@@ -74,6 +81,10 @@ export class AuthenticationService {
   }
 
   isSupport(): boolean {
+    if (!this.async.transform(this.loggedIn$)) {
+      return false;
+    }
+
     let temp = this.getRoleId();
 
     if (temp > 0) {
@@ -83,9 +94,16 @@ export class AuthenticationService {
       return false;
     }
   }
+
+  getUserId(): string {
+    let temp = JSON.parse(atob(sessionStorage.getItem("accessToken")!.split('.')[1])) as JwtClaims;
+
+    return temp.UserId;
+  }
 };
 
 export interface JwtClaims {
-  userId: string;
+  UserId: string;
   role: string;
 }
+

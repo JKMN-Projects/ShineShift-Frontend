@@ -1,4 +1,4 @@
-export interface AssignHubRequest {
-  userId: string,
+export interface AssignHubToUserRequest {
+  userid: string,
   hubId: number
 }

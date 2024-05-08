@@ -15,9 +15,23 @@ export class HttpOptionsService {
 
   getHttpOptions() {
     const headers = this.setAuthHeader();
+
     const httpOptions = {
       headers: headers
     };
+
+    return httpOptions;
+  }
+
+  getHttpOptionsWithObserve() {
+    const headers = this.setAuthHeader();
+    const response = 'response';
+
+    const httpOptions = {
+      headers: headers,
+      observe: response as 'body'
+    };
+
     return httpOptions;
   }
 }

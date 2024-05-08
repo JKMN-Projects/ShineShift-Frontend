@@ -4,8 +4,10 @@ import { HubModel } from '../Interfaces/Models/HubModel';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { errorMsg } from '../Utility/GetErrorMessage';
-import { AssignHubRequest } from '../Interfaces/DTO/assign-hub-request';
+import { AssignHubToUserRequest } from '../Interfaces/DTO/assign-hub-request';
 import { HttpOptionsService } from './http-options.service';
+import { UnassignHubRequest } from '../Interfaces/DTO/unassign-hub-request';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +23,12 @@ export class HubService implements IHubService {
   private unassignedHubsSubject$: Subject<HubModel[]> = new BehaviorSubject<HubModel[]>(this.hubs);
   unassignedHubs$: Observable<HubModel[]> = this.unassignedHubsSubject$.asObservable();
 
-  constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient) { }
+  constructor(private httpOptions: HttpOptionsService, private httpClient: HttpClient, private authService: AuthenticationService) { }
 
-  getMyHubs(): void {
+  getMyHubs(userGuid: string): void {
     this.hubsSubject$.next(this.hubs);
 
-    this.httpClient.get<HubModel[]>(this.url + 'GetMyHubs', this.httpOptions.getHttpOptions()).subscribe(x => {
+    this.httpClient.get<HubModel[]>(this.url + 'GetMyHubs/' + userGuid, this.httpOptions.getHttpOptions()).subscribe(x => {
       this.hubsSubject$.next(x);
     });
   }
@@ -39,23 +41,34 @@ export class HubService implements IHubService {
     });
   }
 
-  assignHubToUser(request: AssignHubRequest): void {
-    this.httpClient.put<boolean>(this.url + 'AssignHub', request, this.httpOptions.getHttpOptions()).subscribe(x => {
-      if (!x) {
+  assignHubToUser(request: AssignHubToUserRequest): void {
+    console.log(request);
+    this.httpClient.put<any>(this.url + 'AssignHubToUser', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
+      if (x.status < 200 && x.status > 299) {
         alert("Failed to assign hub. " + errorMsg())
       }
 
-      this.getMyHubs();
+      this.getMyHubs(request.userid);
+    });
+  }
+
+  unassignHubToUser(request: UnassignHubRequest): void {
+    this.httpClient.put<any>(this.url + 'UnassignHubToUser', request, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
+      if (x.status < 200 && x.status > 299) {
+        alert("Failed to unassign hub. " + errorMsg())
+      }
+
+      this.getMyHubs(this.authService.getUserId());
     });
   }
 
   updateHub(hub: HubModel): void {
-    this.httpClient.put<boolean>(this.url + 'Update', hub, this.httpOptions.getHttpOptions()).subscribe(x => {
-      if (!x) {
+    this.httpClient.put<any>(this.url + 'Update', hub, this.httpOptions.getHttpOptionsWithObserve()).subscribe(x => {
+      if (x.status < 200 && x.status > 299) {
         alert("Failed to update hub. " + errorMsg())
       }
 
-      this.getMyHubs();
+      this.getMyHubs(this.authService.getUserId());
     });
   }
 }

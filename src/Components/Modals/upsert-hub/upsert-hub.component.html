@@ -42,7 +42,7 @@
       <mat-form-field *ngIf="isAdmin" appearance="outline" floatLabel="always" style="width: 80%;">
         <mat-label>User</mat-label>
         <mat-select formControlName="User" [compareWith]="CompareMacValues">
-          <mat-option *ngFor="let item of users$ | async" [value]="item">{{item.username}}</mat-option>
+          <mat-option *ngFor="let item of users$ | async" [value]="item">{{item.email}}</mat-option>
         </mat-select>
         <mat-error>{{GetErrorMessage(HubFormGroup.get("User")!)}}</mat-error>
       </mat-form-field>

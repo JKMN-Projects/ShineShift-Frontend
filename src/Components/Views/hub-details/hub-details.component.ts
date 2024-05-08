@@ -23,18 +23,24 @@ import { DeleteConfirmationComponent } from '../../Modals/delete-confirmation/de
 })
 export class HubDetailsComponent {
   displayedColumns: string[] = ['id', 'mac', 'typeName', 'options', 'delete'];
-  dataSource = new MatTableDataSource<SensorModel>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<SensorModel>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   name = "";
+  hubMac = "";
   hubId = 0;
 
   constructor(private matDialog: MatDialog, private router: Router, private location: Location, private sensorService: SensorService) {
     this.name = (this.location.getState() as any).data;
+    this.hubMac = (this.location.getState() as any).hubMac;
     this.hubId = (this.location.getState() as any).hubId;
 
     this.sensorService.getAllByHubId(this.hubId);
+
+    this.sensorService.sensors$.subscribe(x => {
+      this.dataSource.data = x;
+    });
   }
 
   ngAfterViewInit() {
@@ -45,7 +51,7 @@ export class HubDetailsComponent {
     this.matDialog.open(AssignSensorComponent, {
       disableClose: true,
       data: {
-        hubId: this.hubId
+        hubMac: this.hubMac
       }
     });
   }
@@ -66,24 +72,20 @@ export class HubDetailsComponent {
       }
     }).afterClosed().subscribe(x => {
       if (x) {
-        let temp: UnassignSensorRequest = {sensorId: row.id};
+        let temp: UnassignSensorRequest = {Mac: row.mac};
         this.sensorService.unassignSensor(temp, this.hubId);
       }
     });
   }
 
   viewSensorReadings(row: SensorModel) {
-    // Call service to get sensor reading before redirecting
+    this.sensorService.getAllBySensorId(row.id);
     this.router.navigateByUrl("SensorReading", {state: {data: this.name + " sensor " + row.id}});
-  }
-
-  goBack() {
-    this.router.navigateByUrl("MyHubs")
   }
 }
 
-const ELEMENT_DATA: SensorModel[] = [
-  {id: 1, mac: '00:0a:95:9d:68:16', typeName: 'Photoresistor'},
-  {id: 2, mac: '00:24:d7:1f:9b:42', typeName: 'Photoresistor'},
-  {id: 3, mac: '00:1e:8f:45:af:cd', typeName: 'Photoresistor'},
-];
+// const ELEMENT_DATA: SensorModel[] = [
+//   {id: 1, mac: '00:0a:95:9d:68:16', typeName: 'Photoresistor'},
+//   {id: 2, mac: '00:24:d7:1f:9b:42', typeName: 'Photoresistor'},
+//   {id: 3, mac: '00:1e:8f:45:af:cd', typeName: 'Photoresistor'},
+// ];

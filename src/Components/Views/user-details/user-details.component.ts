@@ -8,6 +8,7 @@ import { UpsertHubComponent } from '../../Modals/upsert-hub/upsert-hub.component
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Location } from '@angular/common';
+import { HubService } from '../../../Services/hub.service';
 
 @Component({
   selector: 'app-user-details',
@@ -25,9 +26,13 @@ export class UserDetailsComponent {
   name = "";
   id = 0;
 
-  constructor(private matDialog: MatDialog, private location: Location) {
+  constructor(private matDialog: MatDialog, private location: Location, private hubService: HubService) {
     this.name = (this.location.getState() as any).data;
     this.id = (this.location.getState() as any).id;
+
+    this.hubService.hubs$.subscribe(x => {
+      this.dataSource.data = x;
+    });
   }
 
   ngAfterViewInit() {

@@ -1,4 +1,4 @@
 export interface AssignSensorRequest {
-  hubId: number,
-  sensorId: number
+  sensorMac: string,
+  hubMac: string
 }

@@ -24,15 +24,15 @@ export class AssignSensorComponent {
     Sensor: new FormControl(null, [Validators.required])
   });
 
-  sensors$ = this.sensorService.sensors$;
+  unassignedSensors$ = this.sensorService.unassignedSensors$;
 
   constructor(private fb: FormBuilder, private matDialogRef: MatDialogRef<AssignSensorComponent>, private sensorService: SensorService,
-    @Inject(MAT_DIALOG_DATA) public data: { hubId: number }) {
+    @Inject(MAT_DIALOG_DATA) public data: { hubMac: string }) {
     this.sensorService.getUnassignedSensors();
   }
 
   SaveChanges() {
-    let temp: AssignSensorRequest = {hubId: this.data.hubId, sensorId: (this.SensorFormGroup.get("Sensor")?.value as SensorModel).id};
+    let temp: AssignSensorRequest = {hubMac: this.data.hubMac, sensorMac: (this.SensorFormGroup.get("Sensor")?.value as SensorModel).mac};
 
     this.sensorService.assignSensor(temp);
 
