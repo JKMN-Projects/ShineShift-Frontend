@@ -13,7 +13,7 @@ import { AuthenticationService } from './authentication.service';
   providedIn: 'root'
 })
 export class HubService implements IHubService {
-  url: string = 'https://localhost:7129/api/Hubs/';
+  url: string = 'https://ShineShiftAPI.bm-vault.com/api/Hubs/';
 
   private hubs: Array<HubModel> = [];
 

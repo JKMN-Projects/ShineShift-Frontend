@@ -14,7 +14,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthenticationService {
-  url: string = 'https://localhost:7129/api/Auth/';
+  url: string = 'https://ShineShiftAPI.bm-vault.com/api/Auth/';
 
   private loggedInSubject$: Subject<boolean> = new BehaviorSubject<boolean>(false);
   loggedIn$: Observable<boolean> = this.loggedInSubject$.asObservable();
